@@ -12,7 +12,8 @@
   },
   "vercel": {
     "buildCommand": "npm run build",
-    "outputDirectory": "client/dist"
+    "outputDirectory": "client/dist",
+    "installCommand": "npm install && npm install --prefix server"
   },
   "dependencies": {
     "mongoose": "^8.0.0"
