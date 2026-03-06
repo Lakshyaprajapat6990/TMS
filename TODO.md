@@ -1,4 +1,4 @@
-2026# Vercel Deployment TODO
+# Vercel Deployment TODO
 
 ## Plan Overview
 Convert the Express server to Vercel serverless API routes for deployment.
@@ -19,6 +19,7 @@ Convert the Express server to Vercel serverless API routes for deployment.
 - [x] Update root `package.json` - Add Vercel scripts and configuration
 - [x] Create `vercel.json` - Configure Vercel routing
 - [x] Update `client/src/api/axios.js` - Add production API URL
+- [x] Update `server/package.json` - Add "type": "module" for ESM support
 
 ### Step 4: Update client for production
 - [x] Update `client/vite.config.js` - Add proper proxy for dev, API for prod
@@ -29,6 +30,20 @@ Convert the Express server to Vercel serverless API routes for deployment.
 - [x] Update `server/models/Flat.js` - Convert to ESM
 - [x] Update `server/models/Tenant.js` - Convert to ESM
 - [x] Update `server/models/RentPayment.js` - Convert to ESM
+
+## Build Configuration Fixes Applied
+
+### vercel.json fixes:
+- Added client dependencies installation: `npm install --prefix client`
+- Updated build script to properly install and build client
+- Fixed output directory path to `client/dist`
+
+### package.json fixes:
+- Changed build command from `cd client && npm install && npm run build` to `npm install --prefix client && npm run build --prefix client`
+- Updated Vercel install command to include client
+
+### server/package.json fixes:
+- Added `"type": "module"` to enable ES6 imports in server models
 
 ## Notes
 - User has MongoDB Atlas URI ready

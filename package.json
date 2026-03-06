@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "install:all": "npm install && npm install --prefix server && npm install --prefix client",
-    "build": "cd client && npm install && npm run build",
+    "build": "npm install --prefix client && npm run build --prefix client",
     "start": "NODE_ENV=production npm start --prefix server",
     "start:server": "npm start --prefix server",
     "start:client": "npm run dev --prefix client"
@@ -13,7 +13,7 @@
   "vercel": {
     "buildCommand": "npm run build",
     "outputDirectory": "client/dist",
-    "installCommand": "npm install && npm install --prefix server"
+    "installCommand": "npm install && npm install --prefix server && npm install --prefix client"
   },
   "dependencies": {
     "mongoose": "^8.0.0"
