@@ -5,4 +5,6 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// For development, proxy is handled by Vite
+// For production, use the same-origin API
 export default api;

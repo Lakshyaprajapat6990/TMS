@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const rentPaymentSchema = new mongoose.Schema(
   {
@@ -32,4 +32,4 @@ const rentPaymentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('RentPayment', rentPaymentSchema);
+export default mongoose.model('RentPayment', rentPaymentSchema);

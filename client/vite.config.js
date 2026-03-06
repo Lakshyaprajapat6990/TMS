@@ -12,4 +12,10 @@ export default defineConfig({
       },
     },
   },
+  // For Vercel deployment - output to dist folder at root
+  build: {
+    outDir: 'dist',
+  },
+  // Ensure proper base path for deployment
+  base: '/',
 });

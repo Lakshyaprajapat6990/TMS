@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const flatSchema = new mongoose.Schema(
   {
@@ -22,4 +22,4 @@ const flatSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Flat', flatSchema);
+export default mongoose.model('Flat', flatSchema);
