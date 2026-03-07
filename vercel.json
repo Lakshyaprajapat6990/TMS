@@ -1,4 +1,5 @@
 {
+  "name": "tenant-management",
   "buildCommand": "npm run build",
   "outputDirectory": "client/dist",
   "installCommand": "npm install && npm install --prefix server && npm install --prefix client",
@@ -14,4 +15,3 @@
     }
   ]
 }
-
