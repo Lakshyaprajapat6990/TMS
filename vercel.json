@@ -2,18 +2,15 @@
   "buildCommand": "npm run build",
   "outputDirectory": "client/dist",
   "installCommand": "npm install && npm install --prefix server && npm install --prefix client",
-  "framework": null,
-  "routes": [
+  "framework": "vite",
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/dist/index.html"
+      "source": "/(.*)",
+      "destination": "/client/dist/index.html"
     }
   ]
 }
