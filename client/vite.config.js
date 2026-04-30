@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
@@ -13,11 +12,9 @@ export default defineConfig({
       },
     },
   },
-  // For Vercel deployment - output to dist folder at root
   build: {
-    outDir: path.resolve(__dirname, 'dist'),
+    outDir: 'dist',
     emptyOutDir: true,
   },
-  // Ensure proper base path for deployment
   base: '/',
 });

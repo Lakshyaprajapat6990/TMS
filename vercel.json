@@ -1,6 +1,26 @@
 {
-  "buildCommand": "npm run build",
+  "version": 2,
+  "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/dist",
   "installCommand": "npm install && npm install --prefix server && npm install --prefix client",
-  "framework": "vite"
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/api/buildings/:path*", "destination": "/api/buildings" },
+    { "source": "/api/flats/:path*", "destination": "/api/flats" },
+    { "source": "/api/tenants/:path*", "destination": "/api/tenants" },
+    { "source": "/api/rent/:path*", "destination": "/api/rent" },
+    { "source": "/api/dashboard/:path*", "destination": "/api/dashboard" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Credentials", "value": "true" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
+      ]
+    }
+  ]
 }

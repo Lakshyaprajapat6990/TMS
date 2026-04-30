@@ -1,20 +1,31 @@
-import dbConnect from '../lib/mongodb';
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
 import Building from '../server/models/Building.js';
 import Flat from '../server/models/Flat.js';
 import Tenant from '../server/models/Tenant.js';
 import RentPayment from '../server/models/RentPayment.js';
 
-export default async function handler(req, res) {
-  await dbConnect();
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-  const { method } = req;
+let isConnected = false;
 
-  if (method !== 'GET') {
-    res.setHeader('Allow', ['GET']);
-    return res.status(405).end(`Method ${method} Not Allowed`);
-  }
-
+async function connectDB() {
+  if (isConnected) return;
   try {
+    await mongoose.connect(process.env.MONGO_URI);
+    isConnected = true;
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    throw err;
+  }
+}
+
+app.get('/api/dashboard', async (req, res) => {
+  try {
+    await connectDB();
     const now = new Date();
     const thisMonth = now.getMonth() + 1;
     const thisYear = now.getFullYear();
@@ -40,13 +51,11 @@ export default async function handler(req, res) {
       RentPayment.countDocuments({ status: 'paid', month: thisMonth, year: thisYear }),
     ]);
 
-    // Total pending amount
     const pendingAgg = await RentPayment.aggregate([
       { $match: { status: { $in: ['pending', 'overdue'] } } },
       { $group: { _id: null, total: { $sum: '$amount' } } },
     ]);
 
-    // Recent 5 paid payments
     const recentPayments = await RentPayment.find({ status: 'paid' })
       .sort({ paidDate: -1 })
       .limit(5)
@@ -54,7 +63,6 @@ export default async function handler(req, res) {
       .populate('flat', 'flatNumber')
       .populate('building', 'name');
 
-    // Due in next 7 days
     const upcomingDue = await RentPayment.find({
       status: 'pending',
       dueDate: { $gte: now, $lte: sevenDaysFromNow },
@@ -65,7 +73,7 @@ export default async function handler(req, res) {
       .populate('flat', 'flatNumber')
       .populate('building', 'name');
 
-    return res.json({
+    res.json({
       totalBuildings,
       totalFlats,
       occupiedFlats,
@@ -79,7 +87,8 @@ export default async function handler(req, res) {
       upcomingDue,
     });
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
-}
+});
 
+export default app;
