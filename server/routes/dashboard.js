@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import Building from '../models/Building.js';
+import Flat from '../models/Flat.js';
+import Tenant from '../models/Tenant.js';
+import RentPayment from '../models/RentPayment.js';
+
 const router = express.Router();
-const Building = require('../models/Building');
-const Flat = require('../models/Flat');
-const Tenant = require('../models/Tenant');
-const RentPayment = require('../models/RentPayment');
 
 router.get('/', async (req, res) => {
   try {
@@ -75,4 +76,4 @@ router.get('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

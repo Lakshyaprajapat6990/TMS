@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import Building from '../models/Building.js';
+import Flat from '../models/Flat.js';
+
 const router = express.Router();
-const Building = require('../models/Building');
-const Flat = require('../models/Flat');
 
 // GET all buildings with flat counts
 router.get('/', async (req, res) => {
@@ -91,4 +92,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

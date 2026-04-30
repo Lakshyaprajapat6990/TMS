@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import RentPayment from '../models/RentPayment.js';
+import Tenant from '../models/Tenant.js';
+
 const router = express.Router();
-const RentPayment = require('../models/RentPayment');
-const Tenant = require('../models/Tenant');
 
 // GET all rent payments (optional filters: tenant, building, status, month, year)
 router.get('/', async (req, res) => {
@@ -156,4 +157,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

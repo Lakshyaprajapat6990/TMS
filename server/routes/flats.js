@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import Flat from '../models/Flat.js';
+import Tenant from '../models/Tenant.js';
+
 const router = express.Router();
-const Flat = require('../models/Flat');
-const Tenant = require('../models/Tenant');
 
 // GET all flats (optional filters: building, status)
 router.get('/', async (req, res) => {
@@ -98,4 +99,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
