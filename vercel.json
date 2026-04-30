@@ -1,25 +1,24 @@
 {
   "version": 2,
-  "buildCommand": "npm run build --prefix client",
-  "outputDirectory": "client/dist",
-  "installCommand": "npm install --prefix server && npm install --prefix client",
-  "rewrites": [
-    { "source": "/api/buildings/:path*", "destination": "/api/buildings" },
-    { "source": "/api/flats/:path*", "destination": "/api/flats" },
-    { "source": "/api/tenants/:path*", "destination": "/api/tenants" },
-    { "source": "/api/rent/:path*", "destination": "/api/rent" },
-    { "source": "/api/dashboard/:path*", "destination": "/api/dashboard" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Credentials", "value": "true" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
-        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
-      ]
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
+  ],
+  "routes": [
+    { "src": "/api/buildings(.*)", "dest": "/api/buildings.js" },
+    { "src": "/api/flats(.*)", "dest": "/api/flats.js" },
+    { "src": "/api/tenants(.*)", "dest": "/api/tenants.js" },
+    { "src": "/api/rent(.*)", "dest": "/api/rent.js" },
+    { "src": "/api/dashboard(.*)", "dest": "/api/dashboard.js" },
+    { "src": "/(.*)", "dest": "/client/$1" }
   ]
 }
