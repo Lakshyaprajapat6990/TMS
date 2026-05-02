@@ -1,9 +1,17 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { useAuth } from '../context/AuthContext';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { viewingAs, stopViewingAs } = useAuth();
+  const navigate = useNavigate();
+
+  function handleStopViewing() {
+    stopViewingAs();
+    navigate('/admin');
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -38,6 +46,22 @@ export default function Layout() {
             </svg>
           </button>
         </header>
+
+        {/* "Viewing as user" banner for superadmin */}
+        {viewingAs && (
+          <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm text-amber-800">
+              <span className="text-base">👁️</span>
+              <span>Viewing data for <strong>{viewingAs.name}</strong> ({viewingAs.email})</span>
+            </div>
+            <button
+              onClick={handleStopViewing}
+              className="text-xs font-medium text-amber-700 hover:text-amber-900 border border-amber-300 hover:bg-amber-100 px-3 py-1 rounded-lg transition-colors"
+            >
+              Exit View
+            </button>
+          </div>
+        )}
 
         {/* Page content */}
         <main className="flex-1 p-4 md:p-6 lg:p-8">

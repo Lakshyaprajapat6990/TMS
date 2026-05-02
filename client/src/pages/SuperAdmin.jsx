@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 export default function SuperAdmin() {
@@ -9,6 +11,13 @@ export default function SuperAdmin() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const { startViewingAs } = useAuth();
+  const navigate = useNavigate();
+
+  function handleViewData(user) {
+    startViewingAs({ _id: user._id, name: user.name, email: user.email });
+    navigate('/dashboard');
+  }
 
   useEffect(() => {
     api.get('/users')
@@ -169,6 +178,12 @@ export default function SuperAdmin() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => handleViewData(user)}
+                        className="text-xs px-3 py-1 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 transition-colors"
+                      >
+                        View Data
+                      </button>
                       <button
                         onClick={() => toggleActive(user)}
                         className={`text-xs px-3 py-1 rounded-lg border transition-colors ${

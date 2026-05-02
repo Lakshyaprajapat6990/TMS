@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { Flat, Tenant } from '../lib/models.js';
-import { requireAuth } from '../lib/auth.js';
+import { requireAuth, resolveOwner } from '../lib/auth.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Credentials': 'true',
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 
     const authUser = requireAuth(req, res);
     if (!authUser) return;
-    const ownerId = authUser._id;
+    const ownerId = resolveOwner(authUser, req);
 
     const urlParts = req.url.split('/');
     const lastPart = urlParts[urlParts.length - 1].split('?')[0];

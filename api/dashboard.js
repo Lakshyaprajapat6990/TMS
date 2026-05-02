@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { Building, Flat, Tenant, RentPayment } from '../lib/models.js';
-import { requireAuth } from '../lib/auth.js';
+import { requireAuth, resolveOwner } from '../lib/auth.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Credentials': 'true',
@@ -26,9 +26,9 @@ export default async function handler(req, res) {
     const authUser = requireAuth(req, res);
     if (!authUser) return;
 
-    // Superadmin sees platform-wide stats; regular users see only their own data
-    const ownerFilter = authUser.role === 'superadmin' ? {} : { owner: authUser._id };
-    const ownerObjectId = authUser.role === 'superadmin' ? null : new mongoose.Types.ObjectId(authUser._id);
+    const ownerId = resolveOwner(authUser, req);
+    const ownerFilter = { owner: ownerId };
+    const ownerObjectId = new mongoose.Types.ObjectId(ownerId);
 
     if (req.method === 'GET') {
       const now = new Date();
@@ -56,12 +56,8 @@ export default async function handler(req, res) {
         RentPayment.countDocuments({ ...ownerFilter, status: 'paid', month: thisMonth, year: thisYear }),
       ]);
 
-      const aggMatch = ownerObjectId
-        ? { status: { $in: ['pending', 'overdue'] }, owner: ownerObjectId }
-        : { status: { $in: ['pending', 'overdue'] } };
-
       const pendingAgg = await RentPayment.aggregate([
-        { $match: aggMatch },
+        { $match: { status: { $in: ['pending', 'overdue'] }, owner: ownerObjectId } },
         { $group: { _id: null, total: { $sum: '$amount' } } },
       ]);
 
