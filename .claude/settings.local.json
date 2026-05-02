@@ -3,7 +3,10 @@
     "allow": [
       "Bash(Get-ChildItem -Path \"e:\\\\freelancher Project live\\\\TMS Test For Aprit Friend\\\\TMS\" -Force)",
       "Bash(Select-Object Name, Mode)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(64\\).toString\\('hex'\\)\\)\")",
+      "Bash(npx vercel *)",
+      "Bash(MONGO_URI=\"mongodb+srv://luckyprajapat6990_db_user:Lakshya6990@cluster0.eyrem27.mongodb.net/TMS\" ADMIN_EMAIL=\"lakshyaprajapat6990@gmail.com\" ADMIN_PASSWORD=\"Admin@123\" node scripts/seed-admin.js)"
     ]
   }
 }
