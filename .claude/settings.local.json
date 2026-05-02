@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"e:\\\\freelancher Project live\\\\TMS Test For Aprit Friend\\\\TMS\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(npm install *)"
+    ]
+  }
+}

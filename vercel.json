@@ -2,23 +2,27 @@
   "version": 2,
   "builds": [
     {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "client/package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist"
       }
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
+    { "src": "/api/auth(.*)", "dest": "/api/auth.js" },
+    { "src": "/api/users(.*)", "dest": "/api/users.js" },
     { "src": "/api/buildings(.*)", "dest": "/api/buildings.js" },
     { "src": "/api/flats(.*)", "dest": "/api/flats.js" },
     { "src": "/api/tenants(.*)", "dest": "/api/tenants.js" },
     { "src": "/api/rent(.*)", "dest": "/api/rent.js" },
     { "src": "/api/dashboard(.*)", "dest": "/api/dashboard.js" },
-    { "src": "/(.*)", "dest": "/client/$1" }
+    { "src": "/assets/(.*)", "dest": "/client/assets/$1" },
+    { "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|svg|woff|woff2|ttf|eot))", "dest": "/client/$1" },
+    { "src": "/(.*)", "dest": "/client/index.html" }
   ]
 }
